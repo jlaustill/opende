@@ -1,0 +1,33 @@
+# IceWM preferences for OpenDE
+# Taskbar disabled - using tint2 panel instead
+
+# Disable built-in taskbar (we use tint2)
+ShowTaskBar=0
+
+# Window behavior
+ClickToFocus=1
+FocusOnAppRaise=1
+RaiseOnFocus=0
+RaiseOnClickClient=1
+RaiseOnClickTitleBar=1
+RaiseOnClickButton=1
+RaiseOnClickFrame=1
+
+# Workspaces
+WorkspaceCount=4
+WorkspaceNames=" 1 ", " 2 ", " 3 ", " 4 "
+
+# Window snapping
+SnapMove=1
+EdgeResistance=10
+SnapDistance=10
+
+# Appearance
+TitleBarCentered=0
+TitleBarJoinLeft=0
+TitleBarJoinRight=0
+ShowMenuButtonIcon=1
+
+# Disable IceWM's own background handling (we use nitrogen)
+DesktopBackgroundColor=""
+SupportSemitransparency=1

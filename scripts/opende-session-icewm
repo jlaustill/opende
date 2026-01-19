@@ -1,0 +1,18 @@
+#!/bin/bash
+# OpenDE Session - IceWM Window Manager
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$SCRIPT_DIR/opende-common.sh"
+
+# Ensure icewm config dir exists
+ICEWM_DIR="$HOME/.icewm"
+mkdir -p "$ICEWM_DIR"
+
+# Copy our configs if user doesn't have them
+for file in preferences keys; do
+    if [ ! -f "$ICEWM_DIR/$file" ] && [ -f "$OPENDE_DIR/config/icewm/$file" ]; then
+        cp "$OPENDE_DIR/config/icewm/$file" "$ICEWM_DIR/$file"
+    fi
+done
+
+exec icewm

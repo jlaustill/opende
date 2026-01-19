@@ -1,0 +1,32 @@
+# IceWM keybindings for OpenDE
+# Consistent with other OpenDE window managers
+
+# Alt+Tab handled by IceWM internally
+# Alt+F4 handled by IceWM internally
+
+# Show desktop
+key "Super+d" wmShowDesktop
+
+# Application menu (Super key alone not easily bindable, use Super+space)
+key "Super+space" wmMenu
+
+# Workspaces
+key "Super+1" wmWorkspace1
+key "Super+2" wmWorkspace2
+key "Super+3" wmWorkspace3
+key "Super+4" wmWorkspace4
+
+# Move window to workspace
+key "Super+Shift+1" wmMoveToWorkspace1
+key "Super+Shift+2" wmMoveToWorkspace2
+key "Super+Shift+3" wmMoveToWorkspace3
+key "Super+Shift+4" wmMoveToWorkspace4
+
+# Window snapping (tiling)
+key "Super+Left" wmTileLeft
+key "Super+Right" wmTileRight
+key "Super+Up" wmMaximize
+key "Super+Down" wmMinimize
+
+# Terminal
+key "Super+Return" x-terminal-emulator

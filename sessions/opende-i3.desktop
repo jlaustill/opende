@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=OpenDE (i3)
+Comment=OpenDE with i3 tiling window manager
+Exec=/home/linux/code/opende/scripts/opende-session-i3
+Type=Application

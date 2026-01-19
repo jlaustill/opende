@@ -1,0 +1,8 @@
+#!/bin/bash
+# OpenDE Session - i3 Window Manager
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$SCRIPT_DIR/opende-common.sh"
+
+# i3 supports -c for config file path
+exec i3 -c "$OPENDE_DIR/config/i3/config"

@@ -1,0 +1,7 @@
+#!/bin/bash
+# OpenDE Session - Openbox Window Manager
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$SCRIPT_DIR/opende-common.sh"
+
+exec openbox --config-file "$OPENDE_DIR/config/openbox/rc.xml"

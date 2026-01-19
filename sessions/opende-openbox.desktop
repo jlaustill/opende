@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=OpenDE (Openbox)
+Comment=OpenDE with Openbox window manager
+Exec=/home/linux/code/opende/scripts/opende-session-openbox
+Type=Application

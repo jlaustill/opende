@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=OpenDE (IceWM)
+Comment=OpenDE with IceWM window manager
+Exec=/home/linux/code/opende/scripts/opende-session-icewm
+Type=Application

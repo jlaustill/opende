@@ -1,0 +1,23 @@
+[Unit]
+Description=tint2 panel for OpenDE
+Documentation=man:tint2(1)
+PartOf=graphical-session.target
+After=graphical-session.target
+
+[Service]
+Type=simple
+# TODO: Change to Type=notify once tint2 systemd integration is verified
+# Type=notify
+ExecStart=/usr/local/bin/tint2
+ExecReload=/bin/kill -USR1 $MAINPID
+# TODO: Enable once tint2 systemd integration is verified
+# WatchdogSec=30
+Restart=on-failure
+RestartSec=2
+
+# Prevent restart loops - give up after 5 failures in 60 seconds
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Install]
+WantedBy=graphical-session.target

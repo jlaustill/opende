@@ -1,0 +1,21 @@
+#!/bin/bash
+# OpenDE Session - Fluxbox Window Manager
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$SCRIPT_DIR/opende-common.sh"
+
+# Ensure fluxbox config dir exists and has our keys file
+FLUXBOX_DIR="$HOME/.fluxbox"
+mkdir -p "$FLUXBOX_DIR"
+
+# Copy our keys config if user doesn't have one
+if [ ! -f "$FLUXBOX_DIR/keys" ] && [ -f "$OPENDE_DIR/config/fluxbox/keys" ]; then
+    cp "$OPENDE_DIR/config/fluxbox/keys" "$FLUXBOX_DIR/keys"
+fi
+
+# Copy our init config if user doesn't have one
+if [ ! -f "$FLUXBOX_DIR/init" ] && [ -f "$OPENDE_DIR/config/fluxbox/init" ]; then
+    cp "$OPENDE_DIR/config/fluxbox/init" "$FLUXBOX_DIR/init"
+fi
+
+exec fluxbox
