@@ -63,12 +63,29 @@ Small indicator apps that live in the system tray for quick access to system fun
 
 ## Installation
 
+### 1. Install dependencies
+
 ```bash
 # Core components
 sudo apt install picom dunst nitrogen pcmanfm lxpolkit pasystray network-manager-gnome dex tint2 jgmenu
 
 # Window managers (install all to switch between them)
 sudo apt install openbox fluxbox icewm i3
+```
+
+### 2. Install OpenDE
+
+```bash
+# Clone or download the repository, then:
+sudo ./install.sh
+```
+
+This installs OpenDE to `/usr/local/share/opende/` and registers the sessions with your display manager.
+
+### Uninstall
+
+```bash
+sudo ./uninstall.sh
 ```
 
 ## Structure
