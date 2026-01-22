@@ -4,6 +4,7 @@
 #include <string.h>
 #include "util/output.h"
 #include "categories/effects.h"
+#include "categories/panel.h"
 
 #define VERSION "0.1.0"
 
@@ -87,7 +88,16 @@ static int handle_category(Category cat, Action act, const char *setting, const 
         }
     }
 
-    // Other categories not yet implemented
+    if (cat == CAT_PANEL) {
+        switch (act) {
+            case ACT_ENABLE:  return panel_enable(setting);
+            case ACT_DISABLE: return panel_disable(setting);
+            case ACT_SET:     return panel_set(setting, value);
+            case ACT_STATUS:  return panel_status(setting);
+            default:          return EXIT_ERROR;
+        }
+    }
+
     print_error("Category not yet implemented");
     return EXIT_ERROR;
 }
