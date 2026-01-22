@@ -1,8 +1,10 @@
 // cli/src/categories/effects.c
 #include "effects.h"
+#include "../backends/picom.h"
 #include "../util/output.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 static const char *valid_settings[] = {
     EFFECTS_SETTING_COMPOSITOR,
@@ -33,8 +35,42 @@ int effects_enable(const char *setting) {
         return 2;
     }
 
-    print_info("Enabling %s... (not implemented)", setting);
-    return 0;
+    if (strcmp(setting, EFFECTS_SETTING_COMPOSITOR) == 0) {
+        if (picom_start() == 0) {
+            print_success("Compositor started");
+            return 0;
+        }
+        return 1;
+    }
+
+    if (strcmp(setting, EFFECTS_SETTING_SHADOWS) == 0) {
+        if (picom_set_shadows(1) == 0) {
+            print_success("Shadows enabled");
+            return 0;
+        }
+        print_error("Failed to enable shadows");
+        return 1;
+    }
+
+    if (strcmp(setting, EFFECTS_SETTING_ANIMATIONS) == 0) {
+        if (picom_set_animations(1) == 0) {
+            print_success("Animations enabled");
+            return 0;
+        }
+        print_error("Failed to enable animations");
+        return 1;
+    }
+
+    if (strcmp(setting, EFFECTS_SETTING_TRANSPARENCY) == 0) {
+        if (picom_set_transparency(90) == 0) {
+            print_success("Transparency enabled (90%%)");
+            return 0;
+        }
+        print_error("Failed to enable transparency");
+        return 1;
+    }
+
+    return 1;
 }
 
 int effects_disable(const char *setting) {
@@ -44,8 +80,42 @@ int effects_disable(const char *setting) {
         return 2;
     }
 
-    print_info("Disabling %s... (not implemented)", setting);
-    return 0;
+    if (strcmp(setting, EFFECTS_SETTING_COMPOSITOR) == 0) {
+        if (picom_stop() == 0) {
+            print_success("Compositor stopped");
+            return 0;
+        }
+        return 1;
+    }
+
+    if (strcmp(setting, EFFECTS_SETTING_SHADOWS) == 0) {
+        if (picom_set_shadows(0) == 0) {
+            print_success("Shadows disabled");
+            return 0;
+        }
+        print_error("Failed to disable shadows");
+        return 1;
+    }
+
+    if (strcmp(setting, EFFECTS_SETTING_ANIMATIONS) == 0) {
+        if (picom_set_animations(0) == 0) {
+            print_success("Animations disabled");
+            return 0;
+        }
+        print_error("Failed to disable animations");
+        return 1;
+    }
+
+    if (strcmp(setting, EFFECTS_SETTING_TRANSPARENCY) == 0) {
+        if (picom_set_transparency(100) == 0) {
+            print_success("Transparency disabled (100%% opacity)");
+            return 0;
+        }
+        print_error("Failed to disable transparency");
+        return 1;
+    }
+
+    return 1;
 }
 
 int effects_set(const char *setting, const char *value) {
@@ -55,8 +125,22 @@ int effects_set(const char *setting, const char *value) {
         return 2;
     }
 
-    print_info("Setting %s to '%s'... (not implemented)", setting, value);
-    return 0;
+    if (strcmp(setting, EFFECTS_SETTING_TRANSPARENCY) == 0) {
+        int percent = atoi(value);
+        if (percent < 0 || percent > 100) {
+            print_error("Transparency must be 0-100");
+            return 1;
+        }
+        if (picom_set_transparency(percent) == 0) {
+            print_success("Transparency set to %d%%", percent);
+            return 0;
+        }
+        print_error("Failed to set transparency");
+        return 1;
+    }
+
+    print_error("Setting '%s' does not support 'set', use enable/disable", setting);
+    return 1;
 }
 
 int effects_status(const char *setting) {
@@ -66,13 +150,45 @@ int effects_status(const char *setting) {
             effects_list_settings();
             return 2;
         }
-        printf("%s: (not implemented)\n", setting);
-    } else {
-        print_header("Effects (user-level)");
-        printf("  Compositor:   (not implemented)\n");
-        printf("  Shadows:      (not implemented)\n");
-        printf("  Transparency: (not implemented)\n");
-        printf("  Animations:   (not implemented)\n");
+
+        if (strcmp(setting, EFFECTS_SETTING_COMPOSITOR) == 0) {
+            printf("%s\n", picom_is_running() ? "running" : "stopped");
+            return 0;
+        }
+        if (strcmp(setting, EFFECTS_SETTING_SHADOWS) == 0) {
+            int val = picom_get_shadows();
+            printf("%s\n", val == 1 ? "enabled" : val == 0 ? "disabled" : "unknown");
+            return 0;
+        }
+        if (strcmp(setting, EFFECTS_SETTING_ANIMATIONS) == 0) {
+            int val = picom_get_animations();
+            printf("%s\n", val == 1 ? "enabled" : val == 0 ? "disabled" : "unknown");
+            return 0;
+        }
+        if (strcmp(setting, EFFECTS_SETTING_TRANSPARENCY) == 0) {
+            int val = picom_get_transparency();
+            if (val >= 0) printf("%d%%\n", val);
+            else printf("unknown\n");
+            return 0;
+        }
     }
+
+    // Show all effects status
+    print_header("Effects (user-level)");
+
+    int compositor = picom_is_running();
+    int shadows = picom_get_shadows();
+    int animations = picom_get_animations();
+    int transparency = picom_get_transparency();
+
+    printf("  Compositor:   %s\n", compositor ? "running" : "stopped");
+    printf("  Shadows:      %s\n", shadows == 1 ? "enabled" : shadows == 0 ? "disabled" : "unknown");
+    printf("  Animations:   %s\n", animations == 1 ? "enabled" : animations == 0 ? "disabled" : "unknown");
+    printf("  Transparency: %s\n", transparency >= 0 ?
+           (transparency == 100 ? "disabled (100%)" : "enabled") : "unknown");
+    if (transparency >= 0 && transparency < 100) {
+        printf("                %d%% inactive window opacity\n", transparency);
+    }
+
     return 0;
 }
