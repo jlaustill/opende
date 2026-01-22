@@ -63,6 +63,18 @@ for desktop_file in "$SOURCE_DIR/sessions/"*.desktop; do
         "$desktop_file" > "$XSESSIONS_DIR/$filename"
 done
 
+# Build and install CLI tool
+info "Building CLI tool..."
+if [ -d "$SOURCE_DIR/cli" ]; then
+    (cd "$SOURCE_DIR/cli" && make clean && make)
+    if [ -f "$SOURCE_DIR/cli/opende" ]; then
+        info "Installing CLI tool..."
+        install -m 755 "$SOURCE_DIR/cli/opende" /usr/local/bin/
+    else
+        warn "CLI build failed, skipping CLI installation"
+    fi
+fi
+
 info "Installation complete!"
 echo ""
 echo "Next steps:"

@@ -41,6 +41,12 @@ rm -f "$XSESSIONS_DIR/opende-fluxbox.desktop"
 rm -f "$XSESSIONS_DIR/opende-i3.desktop"
 rm -f "$XSESSIONS_DIR/opende-icewm.desktop"
 
+# Remove CLI tool
+if [ -f /usr/local/bin/opende ]; then
+    info "Removing CLI tool..."
+    rm -f /usr/local/bin/opende
+fi
+
 info "Uninstallation complete!"
 echo ""
 echo "Note: The following were NOT removed:"
