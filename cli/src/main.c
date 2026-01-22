@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "util/output.h"
+#include "categories/input.h"
 #include "categories/effects.h"
 #include "categories/panel.h"
 
@@ -66,8 +67,9 @@ static Action parse_action(const char *str) {
 }
 
 static int handle_status_all(void) {
-    print_header("OpenDE Configuration Status");
-    printf("(Not yet implemented)\n");
+    input_status(NULL);
+    effects_status(NULL);
+    panel_status(NULL);
     return EXIT_SUCCESS_CODE;
 }
 
@@ -78,6 +80,16 @@ static int handle_config_interactive(void) {
 }
 
 static int handle_category(Category cat, Action act, const char *setting, const char *value) {
+    if (cat == CAT_INPUT) {
+        switch (act) {
+            case ACT_ENABLE:  return input_enable(setting);
+            case ACT_DISABLE: return input_disable(setting);
+            case ACT_SET:     return input_set(setting, value);
+            case ACT_STATUS:  return input_status(setting);
+            default:          return EXIT_ERROR;
+        }
+    }
+
     if (cat == CAT_EFFECTS) {
         switch (act) {
             case ACT_ENABLE:  return effects_enable(setting);
