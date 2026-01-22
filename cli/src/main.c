@@ -6,6 +6,7 @@
 #include "categories/input.h"
 #include "categories/effects.h"
 #include "categories/panel.h"
+#include "ui/menu.h"
 
 #define VERSION "0.1.0"
 
@@ -74,9 +75,7 @@ static int handle_status_all(void) {
 }
 
 static int handle_config_interactive(void) {
-    print_header("OpenDE Preferences");
-    printf("(Interactive mode not yet implemented)\n");
-    return EXIT_SUCCESS_CODE;
+    return menu_run();
 }
 
 static int handle_category(Category cat, Action act, const char *setting, const char *value) {
