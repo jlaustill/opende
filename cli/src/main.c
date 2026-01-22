@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "util/output.h"
+#include "categories/effects.h"
 
 #define VERSION "0.1.0"
 
@@ -76,14 +77,19 @@ static int handle_config_interactive(void) {
 }
 
 static int handle_category(Category cat, Action act, const char *setting, const char *value) {
-    const char *cat_name = cat == CAT_INPUT ? "input"
-                         : cat == CAT_EFFECTS ? "effects"
-                         : "panel";
+    if (cat == CAT_EFFECTS) {
+        switch (act) {
+            case ACT_ENABLE:  return effects_enable(setting);
+            case ACT_DISABLE: return effects_disable(setting);
+            case ACT_SET:     return effects_set(setting, value);
+            case ACT_STATUS:  return effects_status(setting);
+            default:          return EXIT_ERROR;
+        }
+    }
 
-    printf("Category: %s, Action: %d, Setting: %s, Value: %s\n",
-           cat_name, act, setting ? setting : "(none)", value ? value : "(none)");
-    printf("(Not yet implemented)\n");
-    return EXIT_SUCCESS_CODE;
+    // Other categories not yet implemented
+    print_error("Category not yet implemented");
+    return EXIT_ERROR;
 }
 
 int main(int argc, char *argv[]) {
