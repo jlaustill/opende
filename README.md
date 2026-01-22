@@ -128,6 +128,43 @@ Common shortcuts (configured consistently across all WMs where possible):
 
 **Note:** i3 uses additional keybindings for tiling - see `config/i3/config`.
 
+## CLI Tool
+
+OpenDE includes a command-line tool for managing settings:
+
+```bash
+# Interactive mode
+opende config
+
+# Show all settings
+opende status
+
+# Manage specific categories
+opende effects status
+opende effects enable shadows
+opende effects set transparency 85
+
+opende panel set position bottom
+opende panel enable autohide
+
+opende input enable natural-scrolling    # requires sudo
+opende input set mouse-accel medium      # requires sudo
+```
+
+### Available Settings
+
+| Category | Setting | Values |
+|----------|---------|--------|
+| effects | compositor | enable/disable |
+| effects | shadows | enable/disable |
+| effects | animations | enable/disable |
+| effects | transparency | 0-100 |
+| panel | position | top/bottom |
+| panel | autohide | enable/disable |
+| input | natural-scrolling | enable/disable (sudo) |
+| input | tap-to-click | enable/disable (sudo) |
+| input | mouse-accel | off/low/medium/high (sudo) |
+
 ## Useful Commands
 
 ```bash
